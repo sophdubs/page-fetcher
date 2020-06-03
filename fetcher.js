@@ -12,16 +12,27 @@ const fetcher = function(url, path) {
   let data; 
   let bytes;
   request(url, (error, response, body) => {
-    if (error) return error;
-
-    bytes = response.headers['content-length'];
-    data = body;
-    fs.writeFile(path, data, (err) => {
-      if(err) {
-          return err;
-      }
-      console.log(`Downloaded and saved ${bytes} bytes to ${path}`);
-    });
+    if (error) {
+      return error;
+    } else if (response.statusCode !== 200) {
+      return console.log(`Status code: ${response.statusCode}`);
+    } else {
+      bytes = response.headers['content-length'];
+      data = body;
+      fs.stat(path, (err, stats)=> {
+        if (err) {
+          return console.log('No such file exists');
+        } else {
+          fs.writeFile(path, data, (err) => {
+            if(err) {
+                return err;
+            } else {
+              console.log(`Downloaded and saved ${bytes} bytes to ${path}`);
+            }
+          });
+        }
+      })
+    };
   });
 };
 
