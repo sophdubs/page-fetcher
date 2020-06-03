@@ -10,15 +10,17 @@ const [url, path] = process.argv.slice(2);
 
 const fetcher = function(url, path) {
   let data; 
+  let bytes;
   request(url, (error, response, body) => {
     if (error) return error;
 
+    bytes = response.headers['content-length'];
     data = body;
     fs.writeFile(path, data, (err) => {
       if(err) {
           return err;
       }
-      console.log(`Downloaded and saved ${'dunno'} bytes to ${path}`);
+      console.log(`Downloaded and saved ${bytes} bytes to ${path}`);
     });
   });
 };
