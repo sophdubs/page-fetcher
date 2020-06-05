@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/sophdubs/page-fetcher#readme",
   "dependencies": {
+    "is-valid-path": "^0.1.1",
     "request": "^2.88.2"
   }
 }
